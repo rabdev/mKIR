@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.mkir.MainActivity">
+    <item
+        android:id="@+id/action_esemeny_pipa"
+        android:icon="@drawable/ic_pipa"
+        android:title="Mentés" />
+    <item
+        android:id="@+id/action_megegy"
+        android:icon="@drawable/ic_add_event"
+        android:title="Mentés és Új" />
+    <item
+        android:id="@+id/action_esemeny_megse"
+        android:icon="@drawable/ic_megse"
+        android:title="Kilépés" />
+</menu>

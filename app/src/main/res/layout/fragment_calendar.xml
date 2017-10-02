@@ -1,0 +1,38 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.mkir.fragments.Calendar"
+    android:paddingBottom="56dp">
+
+    <LinearLayout
+        android:id="@+id/calendar_group"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/calendar_header"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:orientation="horizontal" />
+
+        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+            android:id="@+id/calendarview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-32dp"
+            app:mcv_tileHeight="32dp"
+            app:mcv_calendarMode="month"
+            app:mcv_firstDayOfWeek="monday"/>
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/calendar_rv"
+            android:padding="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+</FrameLayout>

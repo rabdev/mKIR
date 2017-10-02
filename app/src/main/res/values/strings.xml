@@ -1,0 +1,48 @@
+<resources>
+    <string name="app_name">mKIR</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="month_array">
+        <item>január</item>
+        <item>február</item>
+        <item>március</item>
+        <item>április</item>
+        <item>május</item>
+        <item>június</item>
+        <item>július</item>
+        <item>augusztus</item>
+        <item>szeptember</item>
+        <item>október</item>
+        <item>november</item>
+        <item>december</item>
+    </string-array>
+
+    <string-array name="taj_tipus_array">
+        <item></item>
+        <item>TAJ</item>
+        <item>Személyazonosító jel nincs kitöltve</item>
+        <item>6 hónapnál fiatalabb gyermek</item>
+        <item>Útlevélszám</item>
+        <item>Segítő jobb engedélyének száma</item>
+        <item>Menedékes, kérelmező, befogadó igazolvány száma</item>
+        <item>Ismeretlen TAJ számú elhunyt személy, ill. ismeretlen beteg</item>
+        <item>Személyazonosító a menekült, menedékes és oltalmazott státusz kérelmezését megelőzően nyújtott ellátás során</item>
+    </string-array>
+
+    <string-array name="nem_array">
+        <item></item>
+        <item>nő</item>
+        <item>férfi</item>
+    </string-array>
+
+    <string-array name="csalad_array">
+        <item></item>
+        <item>házas</item>
+        <item>egyedülálló</item>
+        <item>özvegy</item>
+        <item>elvált</item>
+    </string-array>
+
+</resources>

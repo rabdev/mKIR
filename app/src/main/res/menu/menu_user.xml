@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.mkir.MainActivity">
+    <item
+        android:id="@+id/action_profile"
+        android:title="Profil" />
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@drawable/ic_add_patient_lr"
+        android:title="Beállítások" />
+    <item
+        android:id="@+id/action_exit"
+        android:icon="@drawable/ic_search"
+        android:title="Kijelentkezés" />
+</menu>

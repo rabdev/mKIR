@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.mkir.MainActivity">
+    <item
+        android:id="@+id/action_diagnozisok"
+        android:icon="@drawable/ic_pipa"
+        android:title="Diagnózisok" />
+    <item
+        android:id="@+id/action_anamnezisek"
+        android:icon="@drawable/ic_add_event"
+        android:title="Anamnézisek" />
+    <item
+        android:id="@+id/action_leletek"
+        android:icon="@drawable/ic_test"
+        android:title="Leletek" />
+</menu>
