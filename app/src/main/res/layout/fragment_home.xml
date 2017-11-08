@@ -1,19 +1,16 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:paddingBottom="56dp"
     android:paddingLeft="8dp"
     android:paddingRight="8dp"
     android:paddingTop="8dp"
     tools:context="com.mkir.fragments.Home">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:orientation="vertical">
 
         <TextView
@@ -24,41 +21,24 @@
             android:textSize="18sp"
             android:textStyle="bold" />
 
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/upcoming_recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_margin="4dp"
-            android:scrollbars="vertical">
-
-        </android.support.v7.widget.RecyclerView>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layout_height="match_parent"
             android:padding="4dp"
-            android:text="Betegeim"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/my_patient_recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_margin="4dp"
             android:scrollbars="vertical">
+
 
         </android.support.v7.widget.RecyclerView>
 
     </LinearLayout>
-
-
-</LinearLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:fabSize="normal"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_add_event_lr"
+        android:background="@color/colorPrimaryDark"
+        android:layout_gravity="bottom|end"/>
+</FrameLayout>

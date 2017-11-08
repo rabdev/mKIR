@@ -3,6 +3,7 @@ package com.mkir.fragments;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.media.Image;
 import android.os.Build;
@@ -12,6 +13,8 @@ import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.text.InputFilter;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -51,6 +54,8 @@ import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static android.widget.Toast.LENGTH_LONG;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -63,10 +68,15 @@ public class AddPatient extends Fragment {
     EditText szemely_nev, taj, megszolitas, anyja_neve,szul_orszag, szul_varos, szul_nev, biztositasi_orszag;
     EditText  allampolgarsag, utlevelszam, email, telefonszam, lakcim_orszag, lakcim_varos, lakcim_utca, iranyitoszam, szlacim, megjegyzes;
     RadioGroup ertesitesiForma;
-    boolean isEven;
+    boolean isEven, elojegyzes;
     ArrayAdapter<Integer> adapter1;
     ArrayAdapter<CharSequence> adapter2,  adapter4, adapter5, adapter6;
     ArrayAdapter<String> adapter3;
+    AlertDialog dialog;
+    DatePicker datePicker;
+    LinearLayout date_ll, tajtype_ll;
+    TextView date_tv, tajtype_tv;
+    View dialogdp;
 
     public AddPatient() {
         // Required empty public constructor
@@ -102,11 +112,17 @@ public class AddPatient extends Fragment {
         szlacim = (EditText) addpatient.findViewById(R.id.addszlacim);
         megjegyzes = (EditText) addpatient.findViewById(R.id.addmegjegyzes);
 
+        date_tv= (TextView) addpatient.findViewById(R.id.date_tv);
+        tajtype_tv= (TextView) addpatient.findViewById(R.id.tajtype_tv);
+
+        date_ll = (LinearLayout) addpatient.findViewById(R.id.date_ll);
+        tajtype_ll = (LinearLayout) addpatient.findViewById(R.id.tajtype_ll);
+
         ertesitesiForma = (RadioGroup) addpatient.findViewById(R.id.addertesitesforma);
 
         BottomNavigationView addpatient_navbar = (BottomNavigationView) addpatient.findViewById(R.id.addpatient_navbar);
         addpatient_pipa = (BottomNavigationItemView) addpatient_navbar.findViewById(R.id.action_pipa);
-        addpatient_frissit = (BottomNavigationItemView) addpatient_navbar.findViewById(R.id.action_frissit);
+        addpatient_frissit = (BottomNavigationItemView) addpatient_navbar.findViewById(R.id.action_add_event);
         addpatient_megse = (BottomNavigationItemView) addpatient_navbar.findViewById(R.id.action_megse);
 
 
@@ -124,8 +140,17 @@ public class AddPatient extends Fragment {
         addpatient_frissit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Context context = getActivity().getApplicationContext();
-                Toast.makeText(context, "Frissítés", Toast.LENGTH_SHORT).show();
+                if (taj.getText().toString().trim().length() == 9) {
+                    unique_id = pref.getString(Constants.UNIQUE_ID,"");
+                    elojegyzes=true;
+                    sendJSON(unique_id);
+                    AddEvent addEvent = new AddEvent();
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.content_frame, addEvent, addEvent.getTag())
+                            .addToBackStack("1")
+                            .commit();
+                }
             }
         });
         addpatient_megse.setOnClickListener(new View.OnClickListener() {
@@ -136,126 +161,24 @@ public class AddPatient extends Fragment {
             }
         });
 
-        addbirthy = (Spinner) addpatient.findViewById(R.id.addbirthy);
-
-        ArrayList<Integer> years = new ArrayList<Integer>();
-        int thisYear = Calendar.getInstance().get(Calendar.YEAR);
-        for (int i = 1920; i <= thisYear; i++) {
-            years.add(i);
-        }
-        adapter1 = new ArrayAdapter<Integer>(getActivity(), android.R.layout.simple_spinner_dropdown_item, years);
-        adapter1.setNotifyOnChange(true);
-        addbirthy.setAdapter(adapter1);
-        try {
-            Field popup = Spinner.class.getDeclaredField("mPopup");
-            popup.setAccessible(true);
-
-            // Get private mPopup member variable and try cast to ListPopupWindow
-            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(addbirthy);
-
-            // Set popupWindow height to 500px
-            popupWindow.setHeight(900);
-        } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
-            // silently fail...
-        }
-
-        addbirthm = (Spinner) addpatient.findViewById(R.id.addbirthm);
-        adapter2 = ArrayAdapter.createFromResource(getActivity(), R.array.month_array, android.R.layout.simple_spinner_dropdown_item);
-        adapter2.setNotifyOnChange(true);
-        addbirthm.setAdapter(adapter2);
-        try {
-            Field popup = Spinner.class.getDeclaredField("mPopup");
-            popup.setAccessible(true);
-
-            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(addbirthm);
-
-            popupWindow.setHeight(900);
-        } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
-
-        }
-        addbirthd = (Spinner) addpatient.findViewById(R.id.addbirthd);
-
-        addbirthm.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        date_ll.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ArrayList<String> days = new ArrayList<String>();
-                int day;
-                if (addbirthm.getSelectedItem().equals("január") || addbirthm.getSelectedItem().equals("március") || addbirthm.getSelectedItem().equals("május") || addbirthm.getSelectedItem().equals("július") || addbirthm.getSelectedItem().equals("augusztus") || addbirthm.getSelectedItem().equals("október") || addbirthm.getSelectedItem().equals("december")) {
-                    day = 31;
-                    for (int i = 1; i <= day; i++) {
-                        days.add(Integer.toString(i));
-                    }
-                } else if (addbirthm.getSelectedItem().equals("február")) {
-                    addbirthy.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            Integer year = (Integer) addbirthy.getSelectedItem();
-                            if (year % 4 == 0) {
-                                isEven=true;
-                                adapter2.setNotifyOnChange(true);
-                                adapter1.setNotifyOnChange(true);
-                            } else {
-                                isEven=false;
-                                adapter2.setNotifyOnChange(true);
-                                adapter1.setNotifyOnChange(true);
-                            }
-
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> parent) {
-
-                        }
-                    });
-                    if (isEven) {
-                        day = 29;
-                        for (int i = 1; i <= day; i++) {
-                            days.add(Integer.toString(i));
-                        }
-                    } else {
-                        day = 28;
-                        for (int i = 1; i <= day; i++) {
-                            days.add(Integer.toString(i));
-                        }
-                    }
-                } else
-
-                {
-                    day = 30;
-                    for (int i = 1; i <= day; i++) {
-                        days.add(Integer.toString(i));
-                    }
-                }
-
-                adapter3 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, days);
-                adapter3.setNotifyOnChange(true);
-                addbirthd.setAdapter(adapter3);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+            public void onClick(View v) {
+                showDatePicker();
             }
         });
-        try
 
-        {
-            Field popup = Spinner.class.getDeclaredField("mPopup");
-            popup.setAccessible(true);
-
-            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(addbirthd);
-
-            popupWindow.setHeight(900);
-        } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException |
-                IllegalAccessException e)
-
-        {
-
-        }
-
-        taj_tipus = (Spinner) addpatient.findViewById(R.id.addtajtipus);
-        adapter4 = ArrayAdapter.createFromResource(getActivity(), R.array.taj_tipus_array, android.R.layout.simple_spinner_dropdown_item);
-        taj_tipus.setAdapter(adapter4);
+        tajtype_ll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TajType tajType = new TajType();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .add(R.id.addpatient_frame, tajType, tajType.getTag())
+                        .addToBackStack("2")
+                        .commit();
+            }
+        });
 
 
         nem = (Spinner) addpatient.findViewById(R.id.addnem);
@@ -265,6 +188,13 @@ public class AddPatient extends Fragment {
         csaladi_allapot = (Spinner) addpatient.findViewById(R.id.addcsaladi_allapot);
         adapter6 = ArrayAdapter.createFromResource(getActivity(), R.array.csalad_array, android.R.layout.simple_spinner_dropdown_item);
         csaladi_allapot.setAdapter(adapter6);
+
+        pref.registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                tajtype_tv.setText(pref.getString(Constants.TAJ_TIPUS,""));
+            }
+        });
 
         return addpatient;
 
@@ -303,26 +233,7 @@ public class AddPatient extends Fragment {
         PatientList patient = new PatientList();
         patient.setSzemely_nev(szemely_nev.getText().toString());
         patient.setTaj(taj.getText().toString());
-        if (taj_tipus.getSelectedItem().toString() == "TAJ") {
-            patient.setTaj_tipus_id("1");
-        } else if (taj_tipus.getSelectedItem().toString() == "Személyazonosító jel nincs kitöltve") {
-            patient.setTaj_tipus_id("3");
-        } else if (taj_tipus.getSelectedItem().toString() == "6 hónapnál fiatalabb gyermek") {
-            patient.setTaj_tipus_id("4");
-        } else if (taj_tipus.getSelectedItem().toString() == "Útlevélszám") {
-            patient.setTaj_tipus_id("5");
-        } else if (taj_tipus.getSelectedItem().toString() == "Segítő jobb engedélyének száma") {
-            patient.setTaj_tipus_id("6");
-        } else if (taj_tipus.getSelectedItem().toString() == "Menedékes, kérelmező, befogadó igazolvány száma") {
-            patient.setTaj_tipus_id("7");
-        } else if (taj_tipus.getSelectedItem().toString() == "Ismeretlen TAJ számú elhunyt személy, ill. ismeretlen beteg") {
-            patient.setTaj_tipus_id("8");
-        } else if (taj_tipus.getSelectedItem().toString() == "Személyazonosító a menekült, menedékes és oltalmazott státusz kérelmezését megelőzően nyújtott ellátás során") {
-            patient.setTaj_tipus_id("9");
-        } else {
-            patient.setTaj_tipus_id("");
-        }
-
+        patient.setTaj_tipus_id(pref.getString(Constants.TAJ_TYPE_ID,""));
         if (megszolitas.getText().toString().isEmpty()) {
             patient.setMegszolitas("");
         } else {
@@ -336,7 +247,7 @@ public class AddPatient extends Fragment {
         } else {
             patient.setNeme("");
         }
-        patient.setSzuletesi_ido(addbirthy.getSelectedItem().toString() + "-" + addbirthm.getSelectedItem().toString() + "-" + addbirthd.getSelectedItem().toString());
+        patient.setSzuletesi_ido(date_tv.getText().toString());
 
         if (szul_orszag.getText().toString().isEmpty()) {
             patient.setSzuletesi_hely_orszag("");
@@ -432,6 +343,9 @@ public class AddPatient extends Fragment {
 
                 ServerResponse resp = response.body();
                 Snackbar.make(getView(), resp.getMessage(), Snackbar.LENGTH_LONG).show();
+                if (elojegyzes){
+                    loadJSON(taj.getText().toString());
+                }
             }
 
             @Override
@@ -440,6 +354,73 @@ public class AddPatient extends Fragment {
                 Snackbar.make(getView(), t.getLocalizedMessage(), Snackbar.LENGTH_LONG).show();
 
             }
+
         });
+
+    }
+
+    public void  loadJSON (String taj_azonosito){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Constants.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        LoginInterface loginInterface = retrofit.create(LoginInterface.class);
+
+        PatientList patient = new PatientList();
+        patient.setTaj(taj_azonosito);
+        ServerRequest request = new ServerRequest();
+        request.setOperation(Constants.SEARCH_PATIENT);
+        request.setPatientList(patient);
+        Call<ServerResponse> response = loginInterface.operation(request);
+
+        response.enqueue(new Callback<ServerResponse>() {
+            @Override
+            public void onResponse(Call<ServerResponse> call, retrofit2.Response<ServerResponse> response) {
+
+                ServerResponse resp = response.body();
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString(Constants.SZEMELY_ID,resp.getPatient().getSzemely_id().toString());
+                editor.putString(Constants.SZEMELY_NEV,resp.getPatient().getSzemely_nev().toString());
+                editor.apply();
+
+                Toast.makeText(getContext(), pref.getString(Constants.SZEMELY_ID,"") + pref.getString(Constants.SZEMELY_NEV,""),LENGTH_LONG).show();
+
+
+            }
+
+            @Override
+            public void onFailure(Call<ServerResponse> call, Throwable t) {
+
+                Snackbar.make(getView(), t.getLocalizedMessage(), LENGTH_LONG).show();
+            }
+        });
+
+    }
+    private void showDatePicker () {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        LayoutInflater inflater = (LayoutInflater.from(getContext()));
+        dialogdp = inflater.inflate(R.layout.dialog_datepicker, null);
+        datePicker = (DatePicker) dialogdp.findViewById(R.id.datepicker);
+        datePicker.setFirstDayOfWeek(android.icu.util.Calendar.MONDAY);
+
+        builder.setView(dialogdp);
+
+        builder.setPositiveButton("Mentés", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                date_tv.setText(datePicker.getYear()+"-"+datePicker.getMonth()+"-"+datePicker.getDayOfMonth());
+
+            }
+        });
+        builder.setNegativeButton("Bezárás", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        dialog = builder.create();
+        dialog.show();
+
     }
 }

@@ -4,8 +4,10 @@ package com.mkir.fragments;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.ViewDragHelper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mkir.Constants;
@@ -51,10 +54,12 @@ public class Calendar extends Fragment {
     int year, month, day, x;
     SharedPreferences pref;
     RecyclerView calendarrv;
+    TextView month_view, week_view;
     String datepick, unique_id;
     java.util.Calendar calendar1;
     LinearLayout calendarlayout, calendarheader;
     UpComing adapter_ul;
+    FloatingActionButton add_event;
 
     public Calendar() {
         // Required empty public constructor
@@ -70,6 +75,9 @@ public class Calendar extends Fragment {
         x=0;
         unique_id = pref.getString(Constants.UNIQUE_ID,"");
         calendarheader = (LinearLayout) calendar.findViewById(R.id.calendar_header);
+        month_view = (TextView) calendar.findViewById(R.id.month_view);
+        week_view= (TextView) calendar.findViewById(R.id.week_view);
+        add_event = (FloatingActionButton) calendar.findViewById(R.id.add_event);
 
         calendarView = (MaterialCalendarView) calendar.findViewById(R.id.calendarview);
         calendar1 = java.util.Calendar.getInstance();
@@ -80,6 +88,44 @@ public class Calendar extends Fragment {
         day = calendarView.getSelectedDate().getDay();
         datepick = String.valueOf(year)+"-"+String.valueOf(month)+"-"+String.valueOf(day);
 
+        calendarheader.setVisibility(View.GONE);
+        week_view.setTextColor(getResources().getColor(R.color.colorPrimaryDark, getActivity().getTheme()));
+        month_view.setTextColor(getResources().getColor(R.color.colorGrey, getActivity().getTheme()));
+        calendarView.state().edit().setCalendarDisplayMode(CalendarMode.WEEKS).commit();
+
+        week_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calendarheader.setVisibility(View.GONE);
+                month_view.setTextColor(getResources().getColor(R.color.colorGrey, getActivity().getTheme()));
+                week_view.setTextColor(getResources().getColor(R.color.colorPrimaryDark, getActivity().getTheme()));
+                calendarView.state().edit().setCalendarDisplayMode(CalendarMode.WEEKS).commit();
+            }
+        });
+
+        month_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calendarheader.setVisibility(View.VISIBLE);
+                month_view.setTextColor(getResources().getColor(R.color.colorPrimaryDark, getActivity().getTheme()));
+                week_view.setTextColor(getResources().getColor(R.color.colorGrey, getActivity().getTheme()));
+                calendarView.state().edit().setCalendarDisplayMode(CalendarMode.MONTHS).commit();
+            }
+        });
+
+        add_event.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddEvent addEvent = new AddEvent();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.content_frame, addEvent, addEvent.getTag())
+                        .addToBackStack("1")
+                        .commit();
+            }
+        });
+
+        //add_event.setVisibility(View.GONE);
 
         calendarrv = (RecyclerView) calendar.findViewById(R.id.calendar_rv);
         RecyclerView.LayoutManager layoutManager1 = new LinearLayoutManager(getActivity().getApplicationContext());
@@ -115,24 +161,6 @@ public class Calendar extends Fragment {
                 super.onScrollStateChanged(recyclerView, newState);
             }
         });
-
-        calendarView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (x==1){
-                    if (event.getAction() == MotionEvent.ACTION_MOVE){
-                        x=0;
-                        calendarheader.setVisibility(View.VISIBLE);
-                        calendarView.state().edit().setCalendarDisplayMode(CalendarMode.MONTHS).commit();
-                        return true;
-                    }
-
-                }
-
-                return false;
-            }
-        });
-
 
 
         return calendar;

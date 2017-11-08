@@ -10,7 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +19,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.mkir.Constants;
-import com.mkir.MainActivity;
 import com.mkir.R;
 import com.mkir.ServerRequest;
 import com.mkir.ServerResponse;
-import com.mkir.User;
+import com.mkir.datastreams.User;
 import com.mkir.interfaces.LoginInterface;
 
 import retrofit2.Call;
@@ -55,7 +54,7 @@ public class Profile extends Fragment implements View.OnClickListener
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
         pref = getActivity().getPreferences(0);
-        tv_name.setText("Hello : "+pref.getString(Constants.NAME,""));
+        tv_name.setText("Hello: "+pref.getString(Constants.NAME,"")+"!");
         tv_id.setText(pref.getString(Constants.UNIQUE_ID,""));
 
     }
@@ -65,6 +64,8 @@ public class Profile extends Fragment implements View.OnClickListener
         tv_name = (TextView)view.findViewById(R.id.tv_name);
         tv_id= (TextView) view.findViewById(R.id.tv_id);
         btn_change_password = (AppCompatButton)view.findViewById(R.id.btn_chg_password);
+        btn_change_password.setVisibility(View.INVISIBLE);
+        tv_id.setVisibility(View.INVISIBLE);
         btn_logout = (AppCompatButton)view.findViewById(R.id.btn_logout);
         btn_change_password.setOnClickListener(this);
         btn_logout.setOnClickListener(this);
@@ -191,6 +192,25 @@ public class Profile extends Fragment implements View.OnClickListener
                 tv_message.setVisibility(View.VISIBLE);
                 tv_message.setText(t.getLocalizedMessage());
 
+            }
+        });
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                    // handle back button's click listener
+                    getFragmentManager().popBackStack();
+                    getActivity().findViewById(R.id.bottom_navbar).setVisibility(View.VISIBLE);
+                    return true;
+                }
+                return false;
             }
         });
     }

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/addpatient_frame"
     android:background="#F1F1F1"
     tools:context="com.mkir.fragments.AddPatient">
 
@@ -106,6 +107,7 @@
 
 
                 <LinearLayout
+                    android:id="@+id/tajtype_ll"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -118,13 +120,14 @@
                         android:text="TAJ típusa:"
                         android:textSize="16sp"
                         android:textStyle="bold" />
-
-                    <Spinner
-                        android:id="@+id/addtajtipus"
+                    <TextView
+                        android:id="@+id/tajtype_tv"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="12dp"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:textSize="16sp" />
+
                 </LinearLayout>
 
                 <TextView
@@ -215,73 +218,33 @@
                         android:layout_weight="1" />
                 </LinearLayout>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:gravity="center_vertical"
-                    android:text="Születési idő:"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
                 <LinearLayout
+                    android:id="@+id/date_ll"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="8dp">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_marginRight="8dp"
                         android:layout_weight="1"
-                        android:gravity="start"
-                        android:text="Év:"
-                        android:textSize="16sp" />
+                        android:gravity="center_vertical"
+                        android:text="Születési idő:"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/date_tv"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:gravity="start"
-                        android:text="Hónap:"
+                        android:gravity="end"
                         android:textSize="16sp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="start"
-                        android:text="Nap:"
-                        android:textSize="16sp" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp">
-
-                    <Spinner
-                        android:id="@+id/addbirthy"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" />
-
-                    <Spinner
-                        android:id="@+id/addbirthm"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" />
-
-                    <Spinner
-                        android:id="@+id/addbirthd"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" />
-
-                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"

@@ -1,8 +1,8 @@
 package com.mkir.fragments;
 
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
+
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,13 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mkir.Constants;
-import com.mkir.adapters.UpComing;
-import com.mkir.datastreams.PatientList;
 import com.mkir.R;
 import com.mkir.ServerRequest;
 import com.mkir.ServerResponse;
-import com.mkir.adapters.MyPatients;
-import com.mkir.datastreams.UpComingList;
 import com.mkir.interfaces.LoginInterface;
 
 import java.util.ArrayList;
@@ -29,20 +25,15 @@ import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static android.widget.Toast.LENGTH_LONG;
-
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Home extends Fragment {
+public class TajType extends Fragment {
 
-    SharedPreferences pref;
-    RecyclerView mypatients, upcoming;
-    MyPatients adapter_pl;
-    UpComing adapter_ul;
+    RecyclerView tajtype_rv;
+    com.mkir.adapters.TajType adapter_tt;
 
-
-    public Home() {
+    public TajType() {
         // Required empty public constructor
     }
 
@@ -51,21 +42,18 @@ public class Home extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View home = inflater.inflate(R.layout.fragment_home, container, false);
-        pref=getActivity().getPreferences(0);
+        View tajtype = inflater.inflate(R.layout.fragment_taj_type, container, false);
 
-        upcoming = (RecyclerView) home.findViewById(R.id.upcoming_recyclerview);
-        RecyclerView.LayoutManager layoutManager1 = new LinearLayoutManager(getActivity().getApplicationContext());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        tajtype_rv= (RecyclerView) tajtype.findViewById(R.id.tajtype_recyclerview);
+        tajtype_rv.setLayoutManager(layoutManager);
 
-        upcoming.setLayoutManager(layoutManager1);
+        loadJSON();
 
-        String unique_id = pref.getString(Constants.UNIQUE_ID,"");
-        loadUpcoming(unique_id);
-
-        return home;
+        return tajtype;
     }
 
-   private void loadUpcoming(String unique_id){
+    private void loadJSON(){
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Constants.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -73,11 +61,8 @@ public class Home extends Fragment {
 
         LoginInterface loginInterface = retrofit.create(LoginInterface.class);
 
-        UpComingList upComingList = new UpComingList();
-        upComingList.setSzemely_id(unique_id);
         ServerRequest request = new ServerRequest();
-        request.setOperation(Constants.UPCOMING_LIST);
-        request.setUpComingList(upComingList);
+        request.setOperation(Constants.TAJ_TYPE);
         Call<ServerResponse> response = loginInterface.operation(request);
 
         response.enqueue(new Callback<ServerResponse>() {
@@ -86,9 +71,9 @@ public class Home extends Fragment {
 
                 ServerResponse resp = response.body();
 
-                ArrayList<UpComingList> upcl = new ArrayList<>(Arrays.asList(resp.getUpComingList()));
-                adapter_ul=new UpComing(upcl);
-                upcoming.setAdapter(adapter_ul);
+                ArrayList<com.mkir.datastreams.TajType> data = new ArrayList<>(Arrays.asList(resp.getTajType()));
+                adapter_tt=new com.mkir.adapters.TajType(data);
+                tajtype_rv.setAdapter(adapter_tt);
 
 
                 //Snackbar.make(getView(), data, LENGTH_LONG).show();
@@ -97,7 +82,7 @@ public class Home extends Fragment {
             @Override
             public void onFailure(Call<ServerResponse> call, Throwable t) {
 
-                Snackbar.make(getView(), t.getLocalizedMessage(), LENGTH_LONG).show();
+                Snackbar.make(getView(), t.getLocalizedMessage(), Snackbar.LENGTH_LONG).show();
             }
         });
     }

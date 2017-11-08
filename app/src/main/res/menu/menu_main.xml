@@ -3,13 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.mkir.MainActivity">
     <item
-        android:id="@+id/action_camera"
-        android:icon="@drawable/ic_qrreader"
-        android:title="Vonalkódolvasó" />
-    <item
-        android:id="@+id/action_add"
-        android:icon="@drawable/ic_add_patient_lr"
-        android:title="Betegfelvétel" />
+        android:id="@+id/action_mypatients"
+        android:icon="@drawable/ic_mypatients"
+        android:title="Betegeim" />
     <item
         android:id="@+id/action_search"
         android:icon="@drawable/ic_search"

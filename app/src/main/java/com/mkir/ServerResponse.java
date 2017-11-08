@@ -1,10 +1,14 @@
 package com.mkir;
 
-import com.mkir.adapters.UpComing;
 import com.mkir.datastreams.Anamnezis;
+import com.mkir.datastreams.Doctors;
+import com.mkir.datastreams.Elojegyzes;
 import com.mkir.datastreams.PatientList;
 import com.mkir.datastreams.PatientLog;
+import com.mkir.datastreams.TajType;
 import com.mkir.datastreams.UpComingList;
+import com.mkir.datastreams.User;
+import com.mkir.fragments.DoctorsList;
 
 /**
  * Created by nyulg on 2017. 06. 20..
@@ -16,6 +20,7 @@ public class ServerResponse {
     private User user;
     private PatientList patient1;
     private Anamnezis anamnezis;
+    private Elojegyzes elojegy;
 
     public String getResult() {
         return result;
@@ -47,4 +52,19 @@ public class ServerResponse {
 
     public PatientLog [] getPatientLog(){return patientLog;}
 
+    public Elojegyzes getElojegy() {
+        return elojegy;
+    }
+
+    private Doctors[] doctorList;
+
+    public Doctors[] getDoctorList() {
+        return doctorList;
+    }
+
+    private TajType[] taj_tipus;
+
+    public TajType[] getTajType(){
+        return taj_tipus;
+    }
 }

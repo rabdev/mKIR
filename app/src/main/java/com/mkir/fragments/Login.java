@@ -1,30 +1,24 @@
 package com.mkir.fragments;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.AppCompatButton;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.mkir.Constants;
 import com.mkir.MainActivity;
 import com.mkir.R;
 import com.mkir.ServerRequest;
 import com.mkir.ServerResponse;
-import com.mkir.User;
+import com.mkir.datastreams.User;
 import com.mkir.interfaces.LoginInterface;
 
 import retrofit2.Call;
@@ -127,6 +121,7 @@ public class Login extends Fragment implements View.OnClickListener {
                     editor.putString(Constants.USERNAME,resp.getUser().getUsername());
                     editor.putString(Constants.NAME,resp.getUser().getName());
                     editor.putString(Constants.UNIQUE_ID,resp.getUser().getUnique_id());
+                    editor.putString(Constants.OSZTALY,resp.getUser().getKivalasztott_osztaly());
                     editor.apply();
                     getActivity().findViewById(R.id.bottom_navbar).setVisibility(View.VISIBLE);
                     Intent intent = new Intent(getContext(), MainActivity.class);

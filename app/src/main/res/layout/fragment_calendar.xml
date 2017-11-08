@@ -27,6 +27,31 @@
             app:mcv_calendarMode="month"
             app:mcv_firstDayOfWeek="monday"/>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp">
+            <TextView
+                android:id="@+id/month_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:text="Havi nézet"/>
+            <TextView
+                android:id="@+id/week_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:text="Heti nézet"/>
+        </LinearLayout>
+
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/calendar_rv"
@@ -34,5 +59,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/add_event"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:fabSize="normal"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_add_event_lr"
+        android:background="@color/colorPrimaryDark"
+        android:layout_gravity="bottom|end"/>
 
 </FrameLayout>

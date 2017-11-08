@@ -1,0 +1,40 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#99F1F1F1"
+    tools:context="com.mkir.fragments.SearchPatient">
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="350dp"
+        android:orientation="vertical"
+        android:background="#F1F1F1"
+        android:layout_gravity="center">
+        <EditText
+            android:id="@+id/et_searchpatient"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:inputType="number"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:descendantFocusability="blocksDescendants">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/searchpatient_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:scrollbars="vertical" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

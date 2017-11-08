@@ -1,4 +1,4 @@
-package com.mkir;
+package com.mkir.datastreams;
 
 /**
  * Created by nyulg on 2017. 06. 20..
@@ -8,6 +8,7 @@ public class User {
 
     private String userName1;
     private String username;
+    private String kivalasztott_osztaly;
     private String unique_id;
     private String password;
     private String old_password;
@@ -47,4 +48,11 @@ public class User {
         this.new_password = new_password;
     }
 
+    public String getKivalasztott_osztaly() {
+        return kivalasztott_osztaly;
+    }
+
+    public void setKivalasztott_osztaly(String kivalasztott_osztaly) {
+        this.kivalasztott_osztaly = kivalasztott_osztaly;
+    }
 }

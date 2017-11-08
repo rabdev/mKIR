@@ -1,0 +1,18 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#99F1F1F1"
+    tools:context="com.mkir.fragments.TajType">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/tajtype_recyclerview"
+        android:layout_width="300dp"
+        android:layout_height="350dp"
+        android:layout_gravity="center"
+        android:background="#F1F1F1"
+        android:scrollbars="vertical">
+
+    </android.support.v7.widget.RecyclerView>
+
+</FrameLayout>

@@ -19,6 +19,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,6 +33,7 @@ import com.mkir.fragments.AddTest;
 import com.mkir.fragments.Calendar;
 import com.mkir.fragments.Home;
 import com.mkir.fragments.Login;
+import com.mkir.fragments.MyPatients;
 import com.mkir.fragments.Profile;
 import com.mkir.fragments.Tests;
 
@@ -45,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private SharedPreferences preferences;
-    private ImageView user_menu;
+    private ImageView user_menu, add_patient;
     BottomNavigationView bottomNavigationView;
     int index;
 
@@ -69,9 +71,31 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navbar);
         bottomNavigationView.setVisibility(View.VISIBLE);
-        BottomNavigationItemView add_patient = (BottomNavigationItemView) bottomNavigationView.findViewById(R.id.action_add);
-        BottomNavigationItemView camera = (BottomNavigationItemView) bottomNavigationView.findViewById(R.id.action_camera);
+        BottomNavigationItemView mypatients = (BottomNavigationItemView) bottomNavigationView.findViewById(R.id.action_mypatients);
         BottomNavigationItemView search = (BottomNavigationItemView) bottomNavigationView.findViewById(R.id.action_search);
+        mypatients.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomNavigationView.setVisibility(View.GONE);
+                MyPatients myPatients_fr = new MyPatients();
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.content_frame, myPatients_fr, myPatients_fr.getTag())
+                        .addToBackStack("1")
+                        .commit();
+
+            }
+        });
+
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Context context = getApplicationContext();
+                Toast.makeText(context, "Keresés", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        add_patient = (ImageView) findViewById(R.id.add_patient);
         add_patient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,21 +105,6 @@ public class MainActivity extends AppCompatActivity {
                         .replace(R.id.content_frame, addPatient, addPatient.getTag())
                         .addToBackStack("1")
                         .commit();
-
-            }
-        });
-        camera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Context context = getApplicationContext();
-                Toast.makeText(context, "Kamera", Toast.LENGTH_SHORT).show();
-            }
-        });
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Context context = getApplicationContext();
-                Toast.makeText(context, "Keresés", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -116,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
                                         .replace(R.id.content_frame, profile, profile.getTag())
                                         .addToBackStack("1")
                                         .commit();
+                                bottomNavigationView.setVisibility(View.GONE);
                                 return true;
                             case R.id.action_exit:
                                 SharedPreferences.Editor editor = preferences.edit();
@@ -143,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
 
         tabLayout = (TabLayout) findViewById(R.id.home_tab);
         tabLayout.setupWithViewPager(homeviewPager);
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        /*tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
@@ -204,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {
 
             }
-        });
+        });*/
 
 
     }
@@ -240,14 +250,16 @@ public class MainActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    Home home = new Home();
-                    return home;
+                    Calendar calendar = new Calendar();
+                    return calendar;
+                    /*Home home = new Home();
+                    return home;*/
                 case 1:
                     Tests tests = new Tests();
                     return tests;
-                case 2:
+                /*case 2:
                     Calendar calendar = new Calendar();
-                    return calendar;
+                    return calendar;*/
                 default:
                     return null;
             }
@@ -255,8 +267,8 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 3;
+            // Show 2 total pages.
+            return 2;
         }
 
         @Override
@@ -266,8 +278,8 @@ public class MainActivity extends AppCompatActivity {
                     return "Kezdőlap";
                 case 1:
                     return "Vizsgálatok";
-                case 2:
-                    return "Naptár";
+                /*case 2:
+                    return "Naptár";*/
             }
             return null;
         }
@@ -281,12 +293,17 @@ public class MainActivity extends AppCompatActivity {
             index=index-1;
             FragmentManager.BackStackEntry backStackEntry0 = fragmentManager.getBackStackEntryAt(index);
             String tag = backStackEntry0.getName();
-            if(tag=="1"){
+            if(tag.equals("1")){
                 bottomNavigationView.setVisibility(View.VISIBLE);
+            } else if (tag.equals("child")) {
+                Toast.makeText(this, "Szevasz", Toast.LENGTH_SHORT).show();
+                //fragmentManager.getanager().popBackStackImmediate();
             }
         }
 
         super.onBackPressed();
 
     }
+
+
 }

@@ -5,31 +5,6 @@
     android:layout_height="match_parent"
     android:background="#F1F1F1">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:background="@color/colorPrimaryDark"
-        android:orientation="horizontal"
-        android:layout_gravity="start"
-        android:gravity="center_vertical">
-
-        <ImageView
-            android:layout_width="36dp"
-            android:layout_height="32dp"
-            android:layout_marginLeft="8dp"
-            android:src="@drawable/ic_back"
-            android:id="@+id/profile_back"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Profilom"
-            android:textColor="#FFFFFF"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:gravity="center_vertical"
-            android:layout_marginLeft="16dp"/>
-
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -67,7 +42,7 @@
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_logout"
             android:layout_marginTop="20dp"
-            android:text="Logout"
+            android:text="Kijelentkezés"
             android:background="@color/colorPrimaryDark"
             android:textColor="@android:color/white"
             android:layout_width="match_parent"

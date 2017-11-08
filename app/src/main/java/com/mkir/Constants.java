@@ -14,6 +14,10 @@ public class Constants {
     public static final String UPCOMING_LIST = "upComingList";
     public static final String CALENDAR_LIST = "calendarList";
     public static final String ADD_PATIENT="addSzemely";
+    public static final String ADD_ELOJEGYZES="addElojegyzes";
+    public static final String SEARCH_PATIENT="searchPatient";
+    public static final String DOCTORS_LIST= "doctorList";
+    public static final String TAJ_TYPE="tajType";
 
     public static final String PATIENT_LOG_ANAM = "patientLogAnam";
     public static final String PATIENT_LOG_DIAG = "patientLogDiag";
@@ -29,7 +33,17 @@ public class Constants {
     public static final String NAME = "userName1";
     public static final String USERNAME = "username";
     public static final String UNIQUE_ID = "unique_id";
+    public static final String OSZTALY = "kivalasztott_osztaly";
+
     public static final String SZEMELY_ID="szemely_id";
     public static final String SZEMELY_NEV="szemely_nev";
+    public static final String TAJ ="taj";
+
+    public static final String DOC_NAME="doc_name";
+    public static final String DOC_ID="doc_id";
+    public static final String DOC_OSZTALY_ID="doc_osztaly_id";
+
+    public static final String TAJ_TYPE_ID="";
+    public static final String TAJ_TIPUS="taj_tipus";
 
 }

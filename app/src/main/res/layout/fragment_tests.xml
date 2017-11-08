@@ -2,6 +2,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="56dp"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:paddingTop="8dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.mkir.fragments.Tests">
 
     <!-- TODO: Update blank fragment layout -->
@@ -10,5 +15,14 @@
         android:layout_height="match_parent"
         android:layout_marginTop="8dp"
         android:text="@string/hello_blank_fragment" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:fabSize="normal"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_add_test_lr"
+        android:background="@color/colorPrimaryDark"
+        android:layout_gravity="bottom|end"/>
 
 </FrameLayout>
